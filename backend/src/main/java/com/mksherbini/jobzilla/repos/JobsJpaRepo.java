@@ -1,9 +1,10 @@
 package com.mksherbini.jobzilla.repos;
 
 import com.mksherbini.jobzilla.models.orm.Job;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(exported = false)
-public interface JobsJpaRepo extends JpaRepository<Job, Integer> {
+//@RepositoryRestResource(exported = false)
+@Repository
+public interface JobsJpaRepo extends ReactiveCrudRepository<Job, Integer> {
 }

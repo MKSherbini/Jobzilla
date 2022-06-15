@@ -15,7 +15,7 @@ public class JobDtoToOrmAdapter implements GenericAdapter<JobDto, Job> {
     @Override
     public Job adapt(JobDto o) {
         final var dto = modelMapper.map(o, Job.class);
-        dto.setRequiredSkills(technologyAdapter.adapt(o.getRequiredSkills()));
+//        dto.setRequiredSkills(technologyAdapter.adapt(o.getRequiredSkills()));
         return dto;
     }
 }
