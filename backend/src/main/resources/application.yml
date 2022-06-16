@@ -1,11 +1,11 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  api-docs:
+    path: /api=docs
 spring:
   data:
-    rest:
-      base-path: /api
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: jdbc:mysql://localhost:3306/jobzilla
-    username: admin
-    password: admin
+    mongodb:
+      host: localhost
+      port: 0
+      database: local
