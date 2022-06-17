@@ -4,5 +4,5 @@ import com.mksherbini.jobzilla.models.orm.Job;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 //@RepositoryRestResource(exported = false)
-public interface JobsRepo extends ReactiveMongoRepository<Job, Integer> {
+public interface JobsRepo extends ReactiveMongoRepository<Job, String> {
 }

@@ -15,6 +15,6 @@ public class JobDto {
     private String company;
     private String description;
     private String requirements;
-    private TechProfile techProfile = TechProfile.FULLSTACK;
-    private List<SkillDto> requiredSkills = new ArrayList<>();
+//    private TechProfile techProfile = TechProfile.FULLSTACK;
+//    private List<SkillDto> requiredSkills = new ArrayList<>();
 }
