@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/jobs")
@@ -18,12 +20,12 @@ public class JobsController {
     private final JobService jobService;
 
     @GetMapping
-    Flux<Job> findAll() {
+    Flux<JobDto> findAll() {
         return jobService.findAll().log();
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Job>> getJobById(@PathVariable String id) {
+    public Mono<ResponseEntity<JobDto>> getJobById(@PathVariable String id) {
         return jobService.getJobById(id)
                 .map(job -> ResponseEntity.ok()
                         .body(job))
@@ -31,15 +33,14 @@ public class JobsController {
                 .log();
     }
 
-    // TODO: 17/06/2022 use dto here 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Job> addJob(@RequestBody Job job) {
+    public Mono<JobDto> addJob(@RequestBody @Valid JobDto job) {
         return jobService.addJob(job).log();
     }
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<Job>> updateJob(@RequestBody JobDto job, @PathVariable String id) {
+    public Mono<ResponseEntity<JobDto>> updateJob(@RequestBody @Valid JobDto job, @PathVariable String id) {
         var updatedJobMono = jobService.update(job, id).log();
         return updatedJobMono
                 .map(job1 -> ResponseEntity.ok()

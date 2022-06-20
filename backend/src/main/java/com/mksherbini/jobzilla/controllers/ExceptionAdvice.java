@@ -1,32 +1,30 @@
-//package com.mksherbini.jobzilla.controllers;
-//
-//import com.mksherbini.jobzilla.models.web.ErrorResponse;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.ControllerAdvice;
-//import org.springframework.web.bind.annotation.ExceptionHandler;
-//import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-//
-//import javax.servlet.http.HttpServletRequest;
-//
-//@ControllerAdvice
-//public class ExceptionAdvice {
-//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-//    public ResponseEntity<ErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex, HttpServletRequest req) {
-//        String name = ex.getName();
-//        String type = "unknown";
-//        if (ex.getRequiredType() != null)
-//            type = ex.getRequiredType().getSimpleName();
-//        Object value = ex.getValue();
-//        String message = String.format("'%s' should be a valid '%s' and '%s' isn't",
-//                name, type, value);
-//
-//        ErrorResponse errorResponse = new ErrorResponse();
-//        errorResponse.setMessage(message);
-//        errorResponse.setStatus(HttpStatus.valueOf(400));
-//        errorResponse.setCode(400);
-//        errorResponse.setLocation(req.getRequestURL().toString());
-//        return new ResponseEntity<>(errorResponse,
-//                errorResponse.getStatus());
-//    }
-//}
+package com.mksherbini.jobzilla.controllers;
+
+import com.mksherbini.jobzilla.models.web.ErrorResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.support.WebExchangeBindException;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+
+@ControllerAdvice
+@Slf4j
+public class ExceptionAdvice {
+    @ExceptionHandler(WebExchangeBindException.class)
+    public ResponseEntity<String> handleRequestBodyError(WebExchangeBindException ex) {
+        log.error("Exception caught in handleRequestBodyError :  {} ", ex.getMessage(), ex);
+        var error = ex.getBindingResult().getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .filter(Objects::nonNull)
+                .sorted()
+                .collect(Collectors.joining(", "));
+        log.error("errorList : {}", error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+}
